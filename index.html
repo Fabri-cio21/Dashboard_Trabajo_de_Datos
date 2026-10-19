@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fix Mobile · Dashboard de reparaciones y repuestos</title>
+<meta name="description" content="Dashboard de seguimiento de entregas, repuestos y desempeño del taller Fix Mobile.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><h1>FIX MOBILE </h1><p>180 órdenes entregadas, julio a setiembre de 2026. Datos agregados, sin información de clientes.</p></div>
+  <div class="filters" role="group" aria-label="Filtros">
+    <label>Mes <select id="fMes"><option>Todos</option><option>Jul</option><option>Ago</option><option>Set</option></select></label>
+    <label>Técnico <select id="fTec"><option>Todos</option><option>Jorge</option><option>Diego</option></select></label>
+    <button id="reset" type="button">Limpiar filtros</button>
+    <button id="theme" type="button" aria-label="Cambiar tema claro u oscuro">Neon / Claro</button>
+  </div>
+</header>
+<main>
+  <section aria-labelledby="h-hoy">
+    <h2 id="h-hoy" class="sec">Qué requiere acción hoy</h2>
+    <div class="two">
+      <div class="panel"><h3>Órdenes abiertas</h3><ul class="sem" id="sem"></ul><p class="note" id="corte"></p></div>
+      <div class="panel"><h3>Repuestos bajo el mínimo</h3><ul class="stk" id="stk"></ul><p class="note">El proveedor tarda 2,2 días en promedio: reponer hoy evita detenciones.</p></div>
+    </div>
+  </section>
+  <section aria-labelledby="h-kpi">
+    <h2 id="h-kpi" class="sec">Indicadores del periodo</h2>
+    <div class="xp" id="xp"></div>
+    <div class="cards" id="cards"></div>
+  </section>
+  <section aria-labelledby="h-graf">
+    <h2 id="h-graf" class="sec">Tendencias y comparaciones</h2>
+    <div class="grid">
+      <div class="panel"><h3>Tardías y detenidas por mes (%)</h3><div class="chart"><canvas id="c1"></canvas></div><p class="note">La línea verde es la meta de entregas tardías (10 %). No cambia con el filtro de mes.</p></div>
+      <div class="panel"><h3>Entregas a tiempo por técnico (%)</h3><div class="chart"><canvas id="c2"></canvas></div><p class="note">Meta: 90 %.</p></div>
+      <div class="panel"><h3>Ingresos mensuales (S/)</h3><div class="chart"><canvas id="c3"></canvas></div><p class="note" id="n3"></p></div>
+      <div class="panel"><h3>Servicios aplicados y % de tardías</h3><div class="chart"><canvas id="c4"></canvas></div><p class="note">Los servicios con pocas órdenes son indicativos.</p></div>
+      <div class="panel"><h3>Tardías: con y sin falta de repuesto</h3><div class="chart"><canvas id="c7"></canvas></div><p class="note">El stock no explica todos los retrasos.</p></div>
+      <div class="panel"><h3>% de tardías por técnico y mes</h3><div class="chart"><canvas id="c8"></canvas></div><p class="note">No cambia con los filtros.</p></div>
+      <div class="panel"><h3>Órdenes ingresadas en lunes y otros días (% tardías)</h3><div class="chart"><canvas id="c9"></canvas></div></div>
+      <div class="panel"><h3>Repuestos más usados (unidades)</h3><div class="chart"><canvas id="c5"></canvas></div><p class="note">Todas las órdenes registradas; no cambia con los filtros.</p></div>
+      <div class="panel"><h3>Cobranza por método de pago</h3><div class="chart"><canvas id="c10"></canvas></div><p class="note">230 pagos confirmados, S/ 27 776.</p></div>
+    </div>
+  </section>
+  <section aria-labelledby="h-hal">
+    <h2 id="h-hal" class="sec">Hallazgos y mejora esperada</h2>
+    <div class="two">
+      <div class="panel"><h3>Siete hallazgos del análisis</h3><ol class="hal" id="hal"></ol></div>
+      <div class="panel"><h3>Escenarios de reducción de tardías</h3><div id="esc"></div><p class="note">Ejercicio ilustrativo, no una predicción. Meta propuesta: 10 %.</p></div>
+    </div>
+  </section>
+</main>
+<footer>Proyecto Fix Mobile, Capítulo VI: Analítica y visualización de datos.</footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

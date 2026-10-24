@@ -83,7 +83,7 @@ footer{text-align:center;font-size:.78rem;color:var(--muted);padding:20px}
 :root[data-theme=dark] .xp b{font-family:var(--disp);color:var(--grn);text-shadow:0 0 8px var(--grn)}
 .imagen-perrito {
     display: block;
-    margin: 20px auto 0 auto;
-    width: 150px;
+    margin: 10px auto 0 auto;
+    width: 75px;
     border-radius: 8px;
 }

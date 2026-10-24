@@ -81,3 +81,9 @@ footer{text-align:center;font-size:.78rem;color:var(--muted);padding:20px}
 :root[data-theme=dark] .xpbar{border:1px solid var(--vio)}
 :root[data-theme=dark] .xpbar i{background:linear-gradient(90deg,var(--vio),var(--brand),var(--grn));box-shadow:0 0 14px var(--brand)}
 :root[data-theme=dark] .xp b{font-family:var(--disp);color:var(--grn);text-shadow:0 0 8px var(--grn)}
+.imagen-perrito {
+    display: block;
+    margin: 20px auto 0 auto;
+    width: 150px;
+    border-radius: 8px;
+}

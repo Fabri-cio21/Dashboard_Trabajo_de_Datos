@@ -56,16 +56,15 @@ function kpis(o,tec,mes){
   const dias = n ? sum(o,x=>x.dias)/n : 0, tk = n ? ing/n : 0, global = tec==="Todos";
   const meses = mes==="Todos" ? 3 : 1;
   const pm=MESES[MESES.indexOf(mes)-1], pa=pm?DATA.orders.filter(x=>x.mes===pm&&(tec==="Todos"||x.tec===tec)):null;
-  const vs=(v,f,d=1,u="")=>{ if(!pa||!pa.length) return ""; const p=f(pa);
-                            return " · "+(v>=p?"▲ ":"▼ ")+nf(Math.abs(v-p),d)+u+" vs "+pm; };
+  const vs=(v,f,d=1,u="")=>{ if(!pa||!pa.length) return ""; const p=f(pa); return " · "+(v>=p?"▲ ":"▼ ")+nf(Math.abs(v-p),d)+u+" vs "+pm; };
   const dp=sum(o,x=>x.dp), ut=ing?100*(ing-sum(o,x=>x.cr))/ing:0, hoy=new Date(DATA.corte+"T00:00:00"), ab=DATA.abiertas.filter(a=>tec==="Todos"||a.tec===tec), venc=ab.filter(a=>new Date(a.fp+"T00:00:00")<hoy).length;
   const items = [
     ["Órdenes entregadas",n,"Aprox. "+nf(n/meses)+" por mes","neu"],
-    ["Entregas tardías",nf(pct(tar,n),1)+" %","Meta ≤ 10 %",estado(pct(tar,n),10,true,5)],
+    ["Entregas tardías",nf(pct(tar,n),1)+" %","Meta ≤ 10 %"+vs(pct(tar,n),a=>pct(sum(a,x=>x.tardia),a.length),1," pts"),estado(pct(tar,n),10,true,5)],
     ["Detenidas por repuesto",nf(pct(det,n),1)+" %","Meta ≤ 3 %",estado(pct(det,n),3,true,3)],
     ["Días promedio de reparación",nf(dias,2),"Meta ≤ 2,2 días",estado(dias,2.2,true,.3)],
     [mes==="Todos"?"Ingresos del periodo":"Ingresos del mes","S/ "+nf(ing),global?"Meta ≥ S/ 8 700 por mes":"La meta es del taller completo",global?estado(ing/meses,8700,false,1000):"neu"],
-    ["Ticket promedio","S/ "+nf(tk,2),"Meta ≥ S/ 145",estado(tk,145,false,15)],
+    ["Ticket promedio","S/ "+nf(tk,2),"Meta ≥ S/ 145"+vs(tk,a=>sum(a,x=>x.total)/a.length,2),estado(tk,145,false,15)],
     ["Días perdidos por falta de repuesto",dp,"Meta ≤ 10 por trimestre",estado(dp,10*meses/3,true,5)],
     ["Utilidad bruta",nf(ut,1)+" %","Meta ≥ 60 %",estado(ut,60,false,5)],
     ["Repuestos bajo el mínimo",DATA.stock.length,"Meta: 0",DATA.stock.length?"bad":"ok"],
@@ -77,14 +76,6 @@ function kpis(o,tec,mes){
 }
 
 /* ---------- Listas de acción: órdenes abiertas y stock ---------- */
-$("#print").addEventListener("click",()=>{
-  ["p1","p2"].forEach(id=>$("#"+id).hidden=false);
-  render(); setTimeout(()=>window.print(),500);
-});
-window.addEventListener("afterprint",()=>{
-  const on=document.querySelector(".tabs button.on").dataset.p;
-  ["p1","p2"].forEach(id=>$("#"+id).hidden=id!==on); render();
-});
 function accion(){
   const hoy = new Date(DATA.corte+"T00:00:00");
   $("#sem").innerHTML = DATA.abiertas.map(a => {
@@ -107,28 +98,25 @@ const HALLAZGOS = [
   ["Hay equipos terminados sin entregar","Órdenes 182 y 183 con 7 y 5 días de atraso: falta avisar al cliente."]
 ];
 const ESC = [["Base, julio a setiembre",36,20.0,"bad"],["A. Sin detenciones por falta de repuesto",24,13.3,"warn"],["B. A, más un técnico alineado al mejor desempeño",16,8.9,"ok"]];
-$("#print").addEventListener("click",()=>{
-  ["p1","p2"].forEach(id=>$("#"+id).hidden=false);
-  render(); setTimeout(()=>window.print(),500);
-});
-window.addEventListener("afterprint",()=>{
-  const on=document.querySelector(".tabs button.on").dataset.p;
-  ["p1","p2"].forEach(id=>$("#"+id).hidden=id!==on); render();
-});
+function hallazgos(){
+  const O=DATA.orders, tar=x=>x.tardia, r=a=>pct(sum(a,tar),a.length);
+  const pm=MESES.map(m=>r(O.filter(x=>x.mes===m))), sube=pm.every((v,i)=>!i||v>pm[i-1]);
+  const D=O.filter(x=>x.det), ND=O.filter(x=>!x.det), L=O.filter(x=>x.lunes), NL=O.filter(x=>!x.lunes), T=sum(O,tar);
+  return [
+    [sube?"Los retrasos crecen cada mes":"Los retrasos varían por mes", pm.map((v,i)=>nf(v,1)+" % en "+["julio","agosto","setiembre"][i]).join(", ")+"."],
+    ["La falta de repuesto multiplica el riesgo", nf(r(D),1)+" % de tardías entre las detenidas, frente a "+nf(r(ND),1)+" % en el resto."],
+    ["Pero no explica todos los retrasos", sum(ND,tar)+" de las "+T+" entregas tardías ("+nf(pct(sum(ND,tar),T),1)+" %) no tuvieron detención."],
+    HALLAZGOS[3],
+    ["Las órdenes ingresadas en lunes se retrasan más", nf(r(L),1)+" % de tardías frente a "+nf(r(NL),1)+" % en el resto de días."],
+    HALLAZGOS[5], HALLAZGOS[6]
+  ];
+}
 function estaticos(){
-  $("#hal").innerHTML = HALLAZGOS.map(([t,e]) => `<li><strong>${t}</strong><small>${e}</small></li>`).join("");
+  $("#hal").innerHTML = hallazgos().map(([t,e]) => `<li><strong>${t}</strong><small>${e}</small></li>`).join("");
   $("#esc").innerHTML = ESC.map(([t,n,p,c]) => `<div class="esc ${c}"><p><span>${t}</span><span>${n} tardías, ${nf(p,1)} %</span></p><div class="tr"><i style="width:${p*3}%"></i></div></div>`).join("");
 }
 
 /* ---------- Render principal ---------- */
-$("#print").addEventListener("click",()=>{
-  ["p1","p2"].forEach(id=>$("#"+id).hidden=false);
-  render(); setTimeout(()=>window.print(),500);
-});
-window.addEventListener("afterprint",()=>{
-  const on=document.querySelector(".tabs button.on").dataset.p;
-  ["p1","p2"].forEach(id=>$("#"+id).hidden=id!==on); render();
-});
 function render(){
   const mes = $("#fMes").value, tec = $("#fTec").value;
   const base = DATA.orders.filter(x => tec==="Todos" || x.tec===tec);
@@ -193,4 +181,14 @@ $("#fMes").addEventListener("change",render); $("#fTec").addEventListener("chang
 $("#reset").addEventListener("click",()=>{ $("#fMes").value="Todos"; $("#fTec").value="Todos"; render(); });
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));["p1","p2"].forEach(id=>{$("#"+id).hidden=id!==b.dataset.p});window.scrollTo(0,0);render();}));
 setTimeout(()=>$("#splash").classList.add("off"),2000);
+$("#print").addEventListener("click",()=>{
+  window._tm=document.documentElement.dataset.theme; setTheme("light");
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=false);
+  render(); setTimeout(()=>window.print(),500);
+});
+window.addEventListener("afterprint",()=>{
+  const on=document.querySelector(".tabs button.on").dataset.p;
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=id!==on);
+  setTheme(window._tm||"light"); render();
+});
 accion(); estaticos(); render();

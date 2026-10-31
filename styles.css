@@ -64,6 +64,7 @@ footer{text-align:center;font-size:.78rem;color:var(--muted);padding:20px}
 .sp-ring{transform-origin:32px 31px;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 .sp-bar{width:220px;height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin:20px auto 8px}
 .sp-bar i{display:block;height:100%;width:0;background:var(--brand);animation:ld 1.8s ease-out forwards}@keyframes ld{to{width:100%}}
+
 @media print{
   .filters,.tabs,#splash{display:none!important}
   .top{position:static;background:none!important;color:#000;border:0}

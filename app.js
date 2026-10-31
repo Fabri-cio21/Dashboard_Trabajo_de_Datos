@@ -74,6 +74,14 @@ function kpis(o,tec,mes){
 }
 
 /* ---------- Listas de acción: órdenes abiertas y stock ---------- */
+$("#print").addEventListener("click",()=>{
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=false);
+  render(); setTimeout(()=>window.print(),500);
+});
+window.addEventListener("afterprint",()=>{
+  const on=document.querySelector(".tabs button.on").dataset.p;
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=id!==on); render();
+});
 function accion(){
   const hoy = new Date(DATA.corte+"T00:00:00");
   $("#sem").innerHTML = DATA.abiertas.map(a => {
@@ -96,12 +104,28 @@ const HALLAZGOS = [
   ["Hay equipos terminados sin entregar","Órdenes 182 y 183 con 7 y 5 días de atraso: falta avisar al cliente."]
 ];
 const ESC = [["Base, julio a setiembre",36,20.0,"bad"],["A. Sin detenciones por falta de repuesto",24,13.3,"warn"],["B. A, más un técnico alineado al mejor desempeño",16,8.9,"ok"]];
+$("#print").addEventListener("click",()=>{
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=false);
+  render(); setTimeout(()=>window.print(),500);
+});
+window.addEventListener("afterprint",()=>{
+  const on=document.querySelector(".tabs button.on").dataset.p;
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=id!==on); render();
+});
 function estaticos(){
   $("#hal").innerHTML = HALLAZGOS.map(([t,e]) => `<li><strong>${t}</strong><small>${e}</small></li>`).join("");
   $("#esc").innerHTML = ESC.map(([t,n,p,c]) => `<div class="esc ${c}"><p><span>${t}</span><span>${n} tardías, ${nf(p,1)} %</span></p><div class="tr"><i style="width:${p*3}%"></i></div></div>`).join("");
 }
 
 /* ---------- Render principal ---------- */
+$("#print").addEventListener("click",()=>{
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=false);
+  render(); setTimeout(()=>window.print(),500);
+});
+window.addEventListener("afterprint",()=>{
+  const on=document.querySelector(".tabs button.on").dataset.p;
+  ["p1","p2"].forEach(id=>$("#"+id).hidden=id!==on); render();
+});
 function render(){
   const mes = $("#fMes").value, tec = $("#fTec").value;
   const base = DATA.orders.filter(x => tec==="Todos" || x.tec===tec);

@@ -71,26 +71,25 @@ footer{text-align:center;font-size:.78rem;color:var(--muted);padding:20px}
   .panel,.card{break-inside:avoid}
 }
 
-/* ===== Modo oscuro estilo GitHub ===== */
-:root[data-theme=dark]{
-  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;
-  --bg:#0d1117;--card:#161b22;--ink:#e6edf3;--muted:#8b949e;--line:#30363d;
-  --brand:#58a6ff;--soft:#6e7681;--red:#f85149;--amb:#d29922;--grn:#3fb950
-}
-:root[data-theme=dark] body{background:var(--bg)}
-:root[data-theme=dark] .top{background:#161b22;border-bottom:1px solid #30363d;color:#e6edf3}
-:root[data-theme=dark] .brand h1{color:#e6edf3}
-:root[data-theme=dark] .filters select,
-:root[data-theme=dark] .filters button{background:#21262d;color:#c9d1d9;border:1px solid #363b42;border-radius:6px}
-:root[data-theme=dark] .filters select:hover,
-:root[data-theme=dark] .filters button:hover{background:#30363d;border-color:#8b949e}
-:root[data-theme=dark] .filters select option{background:#161b22;color:#e6edf3}
-:root[data-theme=dark] .panel,
-:root[data-theme=dark] .card{background:#161b22;border-color:#30363d;border-radius:6px;box-shadow:none}
-:root[data-theme=dark] .card{border-left-color:var(--c)}
-:root[data-theme=dark] .panel h3{color:#e6edf3}
-:root[data-theme=dark] .tabs{border-bottom-color:#30363d}
-:root[data-theme=dark] .tabs button.on{color:#e6edf3;border-bottom-color:#f78166}
-:root[data-theme=dark] .tabs button:hover{color:#e6edf3}
-:root[data-theme=dark] .hal li::before{background:#1f6feb;color:#fff}
-:root[data-theme=dark] :focus-visible{outline-color:#58a6ff}
+/* ===== Modo oscuro estilo panel violeta ===== */
+:root[data-theme=dark]{--font:"Plus Jakarta Sans",system-ui,sans-serif;--bg:#09090f;--card:#12121e;--ink:#f1f1f8;--muted:#8d8da8;--line:#24243a;--brand:#6c5cff;--soft:#2c2c46;--red:#ff5c70;--amb:#f6b94c;--grn:#3ddc97}
+:root[data-theme=dark] body{background:radial-gradient(900px 420px at 85% -8%,rgba(108,92,255,.22),transparent 60%),var(--bg);background-attachment:fixed}
+:root[data-theme=dark] .top{background:rgba(9,9,15,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);color:#fff}
+:root[data-theme=dark] .filters select,:root[data-theme=dark] .filters button{background:#12121e;color:#d9d9ee;border:1px solid #2a2a44;border-radius:10px}
+:root[data-theme=dark] .filters select:hover,:root[data-theme=dark] .filters button:hover{background:#1a1a2e;border-color:var(--brand)}
+:root[data-theme=dark] .filters select option{background:#12121e;color:#f1f1f8}
+:root[data-theme=dark] .filters #print{background:var(--brand);border-color:var(--brand);color:#fff}
+:root[data-theme=dark] .panel,:root[data-theme=dark] .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:none}
+:root[data-theme=dark] .card{border-top:3px solid var(--c)}
+:root[data-theme=dark] .cards .card:first-child{background:linear-gradient(135deg,#3a2fe0,#7a5cff);border-color:transparent;box-shadow:0 12px 30px -12px rgba(108,92,255,.7)}
+:root[data-theme=dark] .cards .card:first-child b,:root[data-theme=dark] .cards .card:first-child span,:root[data-theme=dark] .cards .card:first-child small{color:#fff}
+:root[data-theme=dark] .panel h3{color:var(--ink);font-size:.9rem}
+:root[data-theme=dark] .sec{border:0;color:var(--muted);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase}
+:root[data-theme=dark] .tabs{border-bottom-color:var(--line)}
+:root[data-theme=dark] .tabs button{border:0;border-radius:999px;padding:8px 18px;margin-bottom:10px}
+:root[data-theme=dark] .tabs button.on{background:var(--brand);color:#fff}
+:root[data-theme=dark] .tabs button:hover{color:#fff}
+:root[data-theme=dark] .xpbar,:root[data-theme=dark] .stk .bar,:root[data-theme=dark] .esc .tr{background:#1c1c30}
+:root[data-theme=dark] .xpbar i{background:linear-gradient(90deg,#4f3df0,#8b6cff)}
+:root[data-theme=dark] .hal li::before{background:var(--brand);color:#fff}
+:root[data-theme=dark] :focus-visible{outline-color:#8b6cff}

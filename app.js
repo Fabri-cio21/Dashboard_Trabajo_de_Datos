@@ -175,7 +175,7 @@ function render(){
 
 /* ---------- Eventos y tema ---------- */
 function setTheme(t){ document.documentElement.dataset.theme = t; $("#theme").textContent = t==="dark" ? "Modo claro" : "Modo oscuro"; try{localStorage.setItem("fm-theme2",t)}catch(e){} }
-setTheme(document.documentElement.dataset.theme || "light");
+setTheme(document.documentElement.dataset.theme || "dark");
 $("#theme").addEventListener("click",()=>{ setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"); render(); });
 $("#fMes").addEventListener("change",render); $("#fTec").addEventListener("change",render);
 $("#reset").addEventListener("click",()=>{ $("#fMes").value="Todos"; $("#fTec").value="Todos"; render(); });

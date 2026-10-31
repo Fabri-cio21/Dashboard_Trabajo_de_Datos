@@ -55,6 +55,9 @@ function kpis(o,tec,mes){
   const n=o.length, tar=sum(o,x=>x.tardia), det=sum(o,x=>x.det), ing=sum(o,x=>x.total);
   const dias = n ? sum(o,x=>x.dias)/n : 0, tk = n ? ing/n : 0, global = tec==="Todos";
   const meses = mes==="Todos" ? 3 : 1;
+  const pm=MESES[MESES.indexOf(mes)-1], pa=pm?DATA.orders.filter(x=>x.mes===pm&&(tec==="Todos"||x.tec===tec)):null;
+  const vs=(v,f,d=1,u="")=>{ if(!pa||!pa.length) return ""; const p=f(pa);
+                            return " · "+(v>=p?"▲ ":"▼ ")+nf(Math.abs(v-p),d)+u+" vs "+pm; };
   const dp=sum(o,x=>x.dp), ut=ing?100*(ing-sum(o,x=>x.cr))/ing:0, hoy=new Date(DATA.corte+"T00:00:00"), ab=DATA.abiertas.filter(a=>tec==="Todos"||a.tec===tec), venc=ab.filter(a=>new Date(a.fp+"T00:00:00")<hoy).length;
   const items = [
     ["Órdenes entregadas",n,"Aprox. "+nf(n/meses)+" por mes","neu"],
